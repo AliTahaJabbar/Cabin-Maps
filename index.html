@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>خرائط العصر الذكي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            padding-bottom: 80px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            animation: floatUp 0.6s ease-out;
+            margin: 15px;
+        }
+
+        @keyframes floatUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        h1 {
+            color: #2d3748;
+            margin-bottom: 25px;
+            font-size: 1.7rem;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: #4a5568;
+            border-radius: 2px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+            -webkit-appearance: none;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        input::placeholder {
+            color: #a0aec0;
+            font-size: 15px;
+        }
+
+        button {
+            padding: 15px 25px;
+            font-size: 16px;
+            font-weight: 500;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            touch-action: manipulation;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            display: none;
+            color: #38a169;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 500;
+            animation: fadeIn 0.5s ease;
+            font-size: 15px;
+        }
+
+        .copyright {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: rgba(216, 204, 230, 0.95);
+            padding: 16px;
+            text-align: center;
+            font-size: 15px;
+            color: #4c4461;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            box-shadow: 0 -2px 15px rgba(0,0,0,0.05);
+        }
+
+        .copyright span {
+            color: #715c8d;
+            font-weight: 600;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 1.4rem;
+                margin-bottom: 20px;
+            }
+            
+            input {
+                padding: 13px 16px;
+                font-size: 15px;
+            }
+            
+            button {
+                padding: 14px 20px;
+                font-size: 15px;
+            }
+            
+            .copyright {
+                font-size: 14px;
+                padding: 14px;
+            }
+        }
+
+        @media (max-width: 350px) {
+            h1 {
+                font-size: 1.3rem;
+            }
+            
+            input::placeholder {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗺️ خرائط العصر الذكي</h1>
+        <form onsubmit="checkWord(event)">
+            <div class="input-group">
+                <input type="text" id="secretInput" placeholder="أدخل اسم المنطقة هنا..." required>
+            </div>
+            <button type="submit">
+                <span>فتح الخريطة</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            </button>
+        </form>
+        <div class="success-message" id="successMessage"></div>
+    </div>
+
+    <div class="copyright">
+        © <span>SmartNet</span> by Ali Taha - 2025
+    </div>
+
+    <script>
+        function checkWord(event) {
+            event.preventDefault();
+            const input = document.getElementById('secretInput').value.trim();
+            const successMessage = document.getElementById('successMessage');
+
+            if(input === 'دولعي') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1H4WbY05i6KOeHPFYQdlGAH8EsZvo13M', '_blank');
+                }, 1500);
+            }
+            if(input === 'سيد ناطق') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1rxAwivQKJeChpm3EO7QhyFEXegljJzk', '_blank');
+                }, 1500);
+            }
+            if(input === 'ntk') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1rxAwivQKJeChpm3EO7QhyFEXegljJzk', '_blank');
+                }, 1500);
+            }
+            if(input === 'NTK') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1rxAwivQKJeChpm3EO7QhyFEXegljJzk', '_blank');
+                }, 1500);
+            }
+            if(input === 'سيد') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1rxAwivQKJeChpm3EO7QhyFEXegljJzk', '_blank');
+                }, 1500);
+            }
+            if(input === 'ناطق') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1rxAwivQKJeChpm3EO7QhyFEXegljJzk', '_blank');
+                }, 1500);
+            }
+            if(input === 'الدولعي') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1H4WbY05i6KOeHPFYQdlGAH8EsZvo13M', '_blank');
+                }, 1500);
+            }
+            if(input === 'جكوك') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1tAYfNZ-l5-tTSLMDj1qyQxDdxG8BTIY', '_blank');
+                }, 1500);
+            }
+            if(input === 'الثالثة') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1MEAolkaQxsmBkfsg71jx3XmvVnM-kzU', '_blank');
+                }, 1500);
+            }
+            if(input === 'الثالثه') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1MEAolkaQxsmBkfsg71jx3XmvVnM-kzU', '_blank');
+                }, 1500);
+            }
+            if(input === 'الثانية') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1oOLbfyayvFBdWWOGpBK-xT1kXx0iw1g', '_blank');
+                }, 1500);
+            }
+            if(input === 'القانيه') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1oOLbfyayvFBdWWOGpBK-xT1kXx0iw1g', '_blank');
+                }, 1500);
+            }
+            if(input === 'الثانية وطني') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1oOLbfyayvFBdWWOGpBK-xT1kXx0iw1g', '_blank');
+                }, 1500);
+            }
+            if(input === 'الثانيه وطني') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1oOLbfyayvFBdWWOGpBK-xT1kXx0iw1g', '_blank');
+                }, 1500);
+            }
+            if(input === 'وطني الثانيه') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1oOLbfyayvFBdWWOGpBK-xT1kXx0iw1g', '_blank');
+                }, 1500);
+            }
+            if(input === 'وطني الثانية') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1oOLbfyayvFBdWWOGpBK-xT1kXx0iw1g', '_blank');
+                }, 1500);
+            }
+            if(input === 'اهلي الثانية') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=15YRfrZL8meLKOYDPb19r-EfYENopqwA', '_blank');
+                }, 1500);
+            }
+            if(input === 'اهلي الثانيه') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=15YRfrZL8meLKOYDPb19r-EfYENopqwA', '_blank');
+                }, 1500);
+            }
+            if(input === 'الثانيه اهلي') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=15YRfrZL8meLKOYDPb19r-EfYENopqwA', '_blank');
+                }, 1500);
+            }
+            if(input === 'الثانية اهلي') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=15YRfrZL8meLKOYDPb19r-EfYENopqwA', '_blank');
+                }, 1500);
+            }
+            if(input === 'الاولى') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=15jUIVVmvhdU_uogd-D8Nr9D5wmMBmFI', '_blank');
+                }, 1500);
+            }
+            if(input === 'الاولة') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=15jUIVVmvhdU_uogd-D8Nr9D5wmMBmFI', '_blank');
+                }, 1500);
+            }
+            if(input === 'الاوله') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=15jUIVVmvhdU_uogd-D8Nr9D5wmMBmFI', '_blank');
+                }, 1500);
+            }
+            if(input === 'دباش') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=18WceMP3GnyxvWb3AZM4aMRhe9mXs3pc', '_blank');
+                }, 1500);
+            }
+            if(input === 'ربيع') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=18WceMP3GnyxvWb3AZM4aMRhe9mXs3pc', '_blank');
+                }, 1500);
+            }
+            if(input === 'ربيع ودباش') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=18WceMP3GnyxvWb3AZM4aMRhe9mXs3pc', '_blank');
+                }, 1500);
+            }
+            if(input === 'دباش وربيع') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=18WceMP3GnyxvWb3AZM4aMRhe9mXs3pc', '_blank');
+                }, 1500);
+            }
+            if(input === 'دباش + ربيع') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=18WceMP3GnyxvWb3AZM4aMRhe9mXs3pc', '_blank');
+                }, 1500);
+            }
+            if(input === 'ربيع + دباش') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=18WceMP3GnyxvWb3AZM4aMRhe9mXs3pc', '_blank');
+                }, 1500);
+            }
+            if(input === 'ربيع و دباش') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=18WceMP3GnyxvWb3AZM4aMRhe9mXs3pc', '_blank');
+                }, 1500);
+            }
+            if(input === 'دباش و ربيع') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=18WceMP3GnyxvWb3AZM4aMRhe9mXs3pc', '_blank');
+                }, 1500);
+            }
+            if(input === 'الجمعية') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=18WceMP3GnyxvWb3AZM4aMRhe9mXs3pc', '_blank');
+                }, 1500);
+            }
+            if(input === 'جمعية') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=18WceMP3GnyxvWb3AZM4aMRhe9mXs3pc', '_blank');
+                }, 1500);
+            }
+            if(input === 'جمعيات') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=18WceMP3GnyxvWb3AZM4aMRhe9mXs3pc', '_blank');
+                }, 1500);
+            }
+            if(input === 'الجمعيات') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=18WceMP3GnyxvWb3AZM4aMRhe9mXs3pc', '_blank');
+                }, 1500);
+            }
+            if(input === 'الدباش') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=18WceMP3GnyxvWb3AZM4aMRhe9mXs3pc', '_blank');
+                }, 1500);
+            }
+            if(input === 'دباش') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=18WceMP3GnyxvWb3AZM4aMRhe9mXs3pc', '_blank');
+                }, 1500);
+            }
+            if(input === 'ربيع') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=18WceMP3GnyxvWb3AZM4aMRhe9mXs3pc', '_blank');
+                }, 1500);
+            }
+            if(input === 'الدور') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1ZLaIWvkNGXWzXBtS2qn3QnuICsF4MLw', '_blank');
+                }, 1500);
+            }
+            if(input === 'دور') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1ZLaIWvkNGXWzXBtS2qn3QnuICsF4MLw', '_blank');
+                }, 1500);
+            }
+            if(input === 'البستان') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1JAbPhFOgkJgDbmUFpdl2kH7CVrihPbI', '_blank');
+                }, 1500);
+            }
+            if(input === 'بستان') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1JAbPhFOgkJgDbmUFpdl2kH7CVrihPbI', '_blank');
+                }, 1500);
+            }
+            if(input === 'سيديه') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1-i0SJBJIM_Jad1WIWuy25MkjSaC3TNo', '_blank');
+                }, 1500);
+            }
+            if(input === 'السيديه') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1-i0SJBJIM_Jad1WIWuy25MkjSaC3TNo', '_blank');
+                }, 1500);
+            }
+            if(input === 'السلام') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=12kyZLeaAIV0OkrVTqy99mKI-y-K7uYk', '_blank');
+                }, 1500);
+            }
+            if(input === 'السلام وطني') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=12kyZLeaAIV0OkrVTqy99mKI-y-K7uYk', '_blank');
+                }, 1500);
+            }
+            if(input === 'وطني السلام') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=12kyZLeaAIV0OkrVTqy99mKI-y-K7uYk', '_blank');
+                }, 1500);
+            }
+            if(input === 'سلام') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=12kyZLeaAIV0OkrVTqy99mKI-y-K7uYk', '_blank');
+                }, 1500);
+            }
+            if(input === 'وطني سلام') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=12kyZLeaAIV0OkrVTqy99mKI-y-K7uYk', '_blank');
+                }, 1500);
+            }
+            if(input === 'سلام وطني') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=12kyZLeaAIV0OkrVTqy99mKI-y-K7uYk', '_blank');
+                }, 1500);
+            }
+            if(input === 'سيدية') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1-i0SJBJIM_Jad1WIWuy25MkjSaC3TNo', '_blank');
+                }, 1500);
+            }
+            if(input === 'السيدية') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1-i0SJBJIM_Jad1WIWuy25MkjSaC3TNo', '_blank');
+                }, 1500);
+            }
+            if(input === 'حي العامل') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=13NvhiIX_lPuUHMcmvejLPFvJCs9fbM8', '_blank');
+                }, 1500);
+            }
+            if(input === 'حي عامل') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=13NvhiIX_lPuUHMcmvejLPFvJCs9fbM8', '_blank');
+                }, 1500);
+            }
+            if(input === 'حي العدل') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1cWV-pjm6j9L1MSURZp17WWSW3ExtoPc', '_blank');
+                }, 1500);
+            }
+            if(input === 'زراعي') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=19AlClkHNP-2VJ3Yu2LPjftkl1Y8TdX8&ll=33.338295124744974%2C44.31278373405011&z=17', '_blank');
+                }, 1500);
+            }
+            if(input === 'الزراعي') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=19AlClkHNP-2VJ3Yu2LPjftkl1Y8TdX8&ll=33.338295124744974%2C44.31278373405011&z=17', '_blank');
+                }, 1500);
+            }
+            if(input === 'زراعي 2') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1ixmnNvPz62U1OxsZdHhbfycnmxQwgMs', '_blank');
+                }, 1500);
+            }
+            if(input === 'الزراعي 2') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1ixmnNvPz62U1OxsZdHhbfycnmxQwgMs', '_blank');
+                }, 1500);
+            }
+            if(input === 'الزراعي 2') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1ixmnNvPz62U1OxsZdHhbfycnmxQwgMs', '_blank');
+                }, 1500);
+            }
+            if(input === 'المجمع') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1uyviwsLdqrKHx72PSP8iUTy5MOQrhTWq', '_blank');
+                }, 1500);
+            }
+            if(input === 'مجمع') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1uyviwsLdqrKHx72PSP8iUTy5MOQrhTWq', '_blank');
+                }, 1500);
+            }
+            if(input === 'مجمع الرجاء') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1uyviwsLdqrKHx72PSP8iUTy5MOQrhTWq', '_blank');
+                }, 1500);
+            }
+            if(input === 'الشعلة') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1alx0V4cInSmD0VPoD08cGVisLtGwGdo', '_blank');
+                }, 1500);
+            }
+            if(input === 'شعلة') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1alx0V4cInSmD0VPoD08cGVisLtGwGdo', '_blank');
+                }, 1500);
+            }
+            if(input === 'شعله') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1alx0V4cInSmD0VPoD08cGVisLtGwGdo', '_blank');
+                }, 1500);
+            }
+            if(input === 'الشعله') {
+                successMessage.style.display = 'block';
+                successMessage.textContent = '✓ تم التحقق بنجاح! جار التوجيه...';
+                
+                setTimeout(() => {
+                    window.open('https://www.google.com/maps/d/edit?mid=1alx0V4cInSmD0VPoD08cGVisLtGwGdo', '_blank');
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>
