@@ -185,6 +185,158 @@
             transform: scale(1.2);
         }
         
+        /* زر جانبي وستايل النافذة الجانبية */
+        .side-button-container {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .side-button {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 15px;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            width: auto;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .side-button.collapsed {
+            padding: 8px;
+            width: 36px;
+            height: 36px;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .side-button:hover {
+            background-color: var(--accent-color);
+            transform: scale(1.05);
+        }
+        
+        .side-button .button-icon {
+            font-size: 16px;
+            margin-left: 10px;
+        }
+        
+        .side-button.collapsed .button-icon {
+            margin-left: 0;
+        }
+        
+        .side-button .button-text {
+            white-space: nowrap;
+            transition: opacity 0.3s ease, width 0.3s ease;
+        }
+        
+        .side-button.collapsed .button-text {
+            width: 0;
+            opacity: 0;
+            display: none;
+        }
+        
+        .side-panel {
+            position: fixed;
+            top: 50%;
+            right: -320px;
+            transform: translateY(-50%);
+            width: 300px;
+            background-color: var(--card-bg);
+            border-radius: 15px 0 0 15px;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: right 0.4s ease;
+            z-index: 999;
+        }
+        
+        .side-panel.active {
+            right: 0;
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(41, 128, 185, 0.2);
+        }
+        
+        .panel-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .close-panel {
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--text-color);
+            transition: color 0.3s;
+        }
+        
+        .close-panel:hover {
+            color: var(--accent-color);
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Tajawal', sans-serif;
+            margin-bottom: 10px;
+            transition: border 0.3s;
+        }
+        
+        .input-field:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: bold;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(41, 128, 185, 0.3);
+        }
+        
+        .result-box {
+            margin-top: 15px;
+            background-color: rgba(41, 128, 185, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            min-height: 100px;
+            border-right: 3px solid var(--primary-color);
+        }
+        
         @media (max-width: 768px) {
             .maps-container {
                 grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -192,6 +344,10 @@
             
             h1 {
                 font-size: 36px;
+            }
+            
+            .side-panel {
+                width: 260px;
             }
         }
         
@@ -206,6 +362,26 @@
             
             .maps-container {
                 grid-template-columns: 1fr;
+            }
+            
+            .side-button {
+                padding: 6px 12px 6px 8px;
+                font-size: 11px;
+                right: 10px;
+            }
+            
+            .side-button.collapsed {
+                padding: 6px;
+                width: 30px;
+                height: 30px;
+            }
+            
+            .side-button .button-icon {
+                font-size: 14px;
+            }
+            
+            .side-panel {
+                width: 230px;
             }
         }
     </style>
@@ -356,5 +532,184 @@
             </a>
         </div>
     </div>
+    
+    <!-- زر جانبي -->
+    <div class="side-button-container">
+        <div class="side-button" id="togglePanel">
+            <span class="button-icon"><i class="fas fa-chevron-left"></i></span>
+            <span class="button-text">عرض الڤيلانات</span>
+        </div>
+    </div>
+    
+    <!-- النافذة الجانبية -->
+    <div class="side-panel" id="sidePanel">
+        <div class="panel-header">
+            <div class="panel-title">الڤيلانات</div>
+            <div class="close-panel" id="closePanel">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <input type="text" class="input-field" id="searchInput" placeholder="ادخل رقم الزون...">
+            <button class="submit-btn" id="searchButton">عرض الڤيلان</button>
+        </div>
+        
+        <div class="result-box" id="resultBox">
+            الڤيلان سيضهر هنا
+        </div>
+    </div>
+    
+    <script>
+        // تفعيل الزر الجانبي والنافذة
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleButton = document.getElementById('togglePanel');
+            const sidePanel = document.getElementById('sidePanel');
+            const closePanel = document.getElementById('closePanel');
+            const searchButton = document.getElementById('searchButton');
+            const searchInput = document.getElementById('searchInput');
+            const resultBox = document.getElementById('resultBox');
+            const buttonText = toggleButton.querySelector('.button-text');
+            
+            // الفيلاناتٍ
+            const conversionMap = {
+           "151": "210 : VLAN",
+            "1310": "114 : VLAN",
+            "1694": "112 : VLAN",
+            "1692": "115 : VLAN",
+            "140": "211 : VLAN",
+            "267": "213 : VLAN",
+            "1721": "315 : VLAN",
+            "1698": "716 : VLAN",
+            "148": "113 : VLAN",
+            "259": "117 : VLAN",
+            "1696": "612 : VLAN",
+            "264": "119 : VLAN",
+            "149": "117 : VLAN",
+            "1720": "310 : VLAN",
+            "265": "114 : VLAN",
+            "1697": "715 : VLAN",
+            "266": "115 : VLAN",
+            "144": "119 : VLAN",
+            "146": "118 : VLAN",
+            "137": "213 : VLAN",
+            "143": "313 : VLAN",
+            "136": "314 : VLAN",
+            "142": "214 : VLAN",
+            "138": "212 : VLAN",
+            "111": "310 : VLAN",
+            "179": "317 : VLAN",
+            "169": "216 : VLAN",
+            "166": "316 : VLAN",
+            "161": "115 : VLAN",
+            "162": "215 : VLAN",
+            "180": "218 : VLAN",
+            "171": "311 : VLAN",
+            "116": "319 : VLAN",
+            "139": "315 : VLAN",
+            "112": "312 : VLAN",
+            "167": "217 : VLAN",
+            "118": "410 : VLAN",
+            "119": "120 : VLAN",
+            "121": "318 : VLAN",
+            "311": "411 : VLAN",
+            "120": "412 : VLAN",
+            "99": "110 : VLAN",
+            "47": "113 : VLAN",
+            "46": "115 : VLAN",
+            "48": "117 : VLAN",
+            "164": "413 : VLAN",
+            "172": "416 : VLAN",
+            "134": "419 : VLAN",
+            "170": "418 : VLAN",
+            "181": "510 : VLAN",
+            "165": "511 : VLAN",
+            "1850": "118 : VLAN",
+            "53": "210 : VLAN",
+            "50": "119 : VLAN",
+            "49": "120 : VLAN",
+            "71": "114 : VLAN",
+            "72": "112 : VLAN",
+            68: 111,
+            69: 116,
+            "113": "411 : VLAN",
+            "1980": "211 : VLAN",
+            73: 212,
+            "182": "512 : VLAN",
+            "147": "417 : VLAN",
+            376: 218,
+            "163": "513 : VLAN",
+            "1747": "213 : VLAN",
+            "55": "215 : VLAN",
+            "51": "216 : VLAN",
+            "52": "214 : VLAN",
+            "152": "514 : VLAN",
+            "54": "217 : VLAN",
+            "173": "515 : VLAN",
+            "174": "516 : VLAN",
+            "175": "517 : VLAN",
+            "106": "611 : VLAN",
+            "183": "519 : VLAN",
+            "60": "219 : VLAN",
+            "61": "220 : VLAN",
+            "108": "616 : VLAN",
+	        "117": "618 : VLAN",     
+            "107": "612 : VLAN",
+            "110": "614 : VLAN",    
+            "109": "617 : VLAN",
+            "122": "615 : VLAN",
+            "178": "518 : VLAN",
+            "176": "610 : VLAN",
+            };
+            
+            // فتح وإغلاق النافذة الجانبية وتغيير شكل الزر
+            toggleButton.addEventListener('click', function() {
+                sidePanel.classList.toggle('active');
+                toggleButton.classList.toggle('collapsed');
+                
+                // تغيير اتجاه السهم
+                const icon = toggleButton.querySelector('.button-icon i');
+                if(sidePanel.classList.contains('active')) {
+                    icon.classList.remove('fa-chevron-left');
+                    icon.classList.add('fa-chevron-right');
+                } else {
+                    icon.classList.remove('fa-chevron-right');
+                    icon.classList.add('fa-chevron-left');
+                }
+            });
+            
+            // إغلاق النافذة بالضغط على زر الإغلاق
+            closePanel.addEventListener('click', function() {
+                sidePanel.classList.remove('active');
+                toggleButton.classList.remove('collapsed');
+                const icon = toggleButton.querySelector('.button-icon i');
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-left');
+            });
+            
+            // وظيفة التحويل
+            searchButton.addEventListener('click', performConversion);
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performConversion();
+                }
+            });
+            
+            function performConversion() {
+                const inputValue = searchInput.value.trim();
+                
+                if (inputValue === '') {
+                    resultBox.innerHTML = 'الرجاء إدخال رقم الزون';
+                    return;
+                }
+                
+                if (conversionMap[inputValue]) {
+                    resultBox.innerHTML = `<div style="font-size: 20px; font-weight: bold; color: var(--primary-color); text-align: center;">${conversionMap[inputValue]}</div>`;
+                } else {
+                    resultBox.innerHTML = 'رقم الزون غير صحيح او غير متوفر';
+                }
+            }
+        });
+    </script>
 </body>
 </html>
