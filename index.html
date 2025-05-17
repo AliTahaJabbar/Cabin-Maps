@@ -91,9 +91,31 @@
             margin-bottom: 20px;
         }
         
+        .search-container {
+            margin: 20px auto;
+            max-width: 500px;
+            padding: 0 20px;
+        }
+
+        #mapSearch {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 30px;
+            font-family: 'Tajawal', sans-serif;
+            margin-bottom: 25px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        #mapSearch:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(41, 128, 185, 0.2);
+        }
+
         .maps-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 25px;
             padding: 20px 10px;
         }
@@ -185,7 +207,6 @@
             transform: scale(1.2);
         }
         
-        /* زر جانبي وستايل النافذة الجانبية */
         .side-button-container {
             position: fixed;
             right: 20px;
@@ -337,9 +358,15 @@
             border-right: 3px solid var(--primary-color);
         }
         
+        @media (max-width: 1024px) {
+            .maps-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
             .maps-container {
-                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                grid-template-columns: 1fr;
             }
             
             h1 {
@@ -358,10 +385,6 @@
             
             h1 {
                 font-size: 28px;
-            }
-            
-            .maps-container {
-                grid-template-columns: 1fr;
             }
             
             .side-button {
@@ -393,7 +416,11 @@
             <h1>خرائط العصر الذكي</h1>
             <p class="subtitle">©SmartNet by Ali Taha - 2025</p>
         </header>
-        
+
+        <div class="search-container">
+            <input type="text" id="mapSearch" placeholder="ابحث عن اسم الخريطة...">
+        </div>
+
         <div class="maps-container">
             <a href="https://www.google.com/maps/d/edit?mid=1ZLaIWvkNGXWzXBtS2qn3QnuICsF4MLw" class="map-item">
                 <div class="map-number">1</div>
@@ -402,9 +429,17 @@
                     <div class="map-title">خريطة الدور وطني</div>
                 </div>
             </a>
+
+            <a href="https://www.google.com/maps/d/edit?mid=1UN4s5AvKMz8ZR3GrcPT0z865V2bUc30" class="map-item">
+                <div class="map-number">2</div>
+                <div class="map-content">
+                    <i class="fas fa-map-marked-alt map-icon"></i>
+                    <div class="map-title">خريطة الدور سوبرسيل</div>
+                </div>
+            </a>
             
             <a href="https://www.google.com/maps/d/edit?mid=1cWV-pjm6j9L1MSURZp17WWSW3ExtoPc" class="map-item">
-                <div class="map-number">2</div>
+                <div class="map-number">3</div>
                 <div class="map-content">
                     <i class="fas fa-globe-asia map-icon"></i>
                     <div class="map-title">خريطة حي العدل وطني</div>
@@ -412,7 +447,7 @@
             </a>
             
             <a href="https://www.google.com/maps/d/edit?mid=12kyZLeaAIV0OkrVTqy99mKI-y-K7uYk" class="map-item">
-                <div class="map-number">3</div>
+                <div class="map-number">4</div>
                 <div class="map-content">
                     <i class="fas fa-map map-icon"></i>
                     <div class="map-title">خريطة السلام وطني</div>
@@ -420,7 +455,7 @@
             </a>
             
             <a href="https://www.google.com/maps/d/edit?mid=15jUIVVmvhdU_uogd-D8Nr9D5wmMBmFI" class="map-item">
-                <div class="map-number">4</div>
+                <div class="map-number">5</div>
                 <div class="map-content">
                     <i class="fas fa-street-view map-icon"></i>
                     <div class="map-title">خريطة الاولى وطني</div>
@@ -428,15 +463,23 @@
             </a>
             
             <a href="https://www.google.com/maps/d/edit?mid=1oOLbfyayvFBdWWOGpBK-xT1kXx0iw1g" class="map-item">
-                <div class="map-number">5</div>
+                <div class="map-number">6</div>
                 <div class="map-content">
                     <i class="fas fa-route map-icon"></i>
                     <div class="map-title">خريطة الثانية وطني</div>
                 </div>
             </a>
+
+            <a href="https://www.google.com/maps/d/edit?mid=1uLoAocxwVs-bn78wNgCG1G4CriTO_dI" class="map-item">
+                <div class="map-number">6</div>
+                <div class="map-content">
+                    <i class="fas fa-route map-icon"></i>
+                    <div class="map-title">خريطة الدولعي + الثانية سوبرسيل</div>
+                </div>
+            </a>
             
             <a href="https://www.google.com/maps/d/edit?mid=1MEAolkaQxsmBkfsg71jx3XmvVnM-kzU" class="map-item">
-                <div class="map-number">6</div>
+                <div class="map-number">7</div>
                 <div class="map-content">
                     <i class="fas fa-location-arrow map-icon"></i>
                     <div class="map-title">خريطة الثالثة وطني</div>
@@ -444,7 +487,7 @@
             </a>
             
             <a href="https://www.google.com/maps/d/edit?mid=18WceMP3GnyxvWb3AZM4aMRhe9mXs3pc" class="map-item">
-                <div class="map-number">7</div>
+                <div class="map-number">8</div>
                 <div class="map-content">
                     <i class="fas fa-globe-americas map-icon"></i>
                     <div class="map-title">خريطة ربيع ودباش وطني</div>
@@ -452,7 +495,7 @@
             </a>
             
             <a href="https://www.google.com/maps/d/edit?mid=1JAbPhFOgkJgDbmUFpdl2kH7CVrihPbI" class="map-item">
-                <div class="map-number">8</div>
+                <div class="map-number">9</div>
                 <div class="map-content">
                     <i class="fas fa-compass map-icon"></i>
                     <div class="map-title">خريطة البستان وطني</div>
@@ -460,7 +503,7 @@
             </a>
             
             <a href="https://www.google.com/maps/d/edit?mid=1H4WbY05i6KOeHPFYQdlGAH8EsZvo13M" class="map-item">
-                <div class="map-number">9</div>
+                <div class="map-number">10</div>
                 <div class="map-content">
                     <i class="fas fa-directions map-icon"></i>
                     <div class="map-title">خريطة الدولعي وطني</div>
@@ -468,7 +511,7 @@
             </a>
             
             <a href="https://www.google.com/maps/d/edit?mid=1tAYfNZ-l5-tTSLMDj1qyQxDdxG8BTIY" class="map-item">
-                <div class="map-number">10</div>
+                <div class="map-number">11</div>
                 <div class="map-content">
                     <i class="fas fa-search-location map-icon"></i>
                     <div class="map-title">خريطة چكوك وطني</div>
@@ -476,7 +519,7 @@
             </a>
             
             <a href="https://www.google.com/maps/d/edit?mid=13NvhiIX_lPuUHMcmvejLPFvJCs9fbM8" class="map-item">
-                <div class="map-number">11</div>
+                <div class="map-number">12</div>
                 <div class="map-content">
                     <i class="fas fa-map-signs map-icon"></i>
                     <div class="map-title">خريطة حي العامل وطني</div>
@@ -484,7 +527,7 @@
             </a>
             
             <a href="https://www.google.com/maps/d/edit?mid=1eTMFXgQn7QYRw1DzB28ECUB22qHbba0" class="map-item">
-                <div class="map-number">12</div>
+                <div class="map-number">13</div>
                 <div class="map-content">
                     <i class="fas fa-mountain map-icon"></i>
                     <div class="map-title">خريطة السيدية وطني</div>
@@ -492,7 +535,7 @@
             </a>
             
             <a href="https://www.google.com/maps/d/edit?mid=19AlClkHNP-2VJ3Yu2LPjftkl1Y8TdX8&ll" class="map-item">
-                <div class="map-number">13</div>
+                <div class="map-number">14</div>
                 <div class="map-content">
                     <i class="fas fa-layer-group map-icon"></i>
                     <div class="map-title">خريطة الزراعي</div>
@@ -500,7 +543,7 @@
             </a>
             
             <a href="https://www.google.com/maps/d/edit?mid=1ixmnNvPz62U1OxsZdHhbfycnmxQwgMs" class="map-item">
-                <div class="map-number">14</div>
+                <div class="map-number">15</div>
                 <div class="map-content">
                     <i class="fas fa-globe-europe map-icon"></i>
                     <div class="map-title">خريطة الزراعي 2</div>
@@ -508,7 +551,7 @@
             </a>
             
             <a href="https://www.google.com/maps/d/edit?mid=1uyviwsLdqrKHx72PSP8iUTy5MOQrhTWq" class="map-item">
-                <div class="map-number">15</div>
+                <div class="map-number">16</div>
                 <div class="map-content">
                     <i class="fas fa-location-crosshairs map-icon"></i>
                     <div class="map-title">خريطة المجمع</div>
@@ -516,7 +559,7 @@
             </a>
             
             <a href="https://www.google.com/maps/d/edit?mid=15YRfrZL8meLKOYDPb19r-EfYENopqwA" class="map-item">
-                <div class="map-number">16</div>
+                <div class="map-number">17</div>
                 <div class="map-content">
                     <i class="fas fa-satellite map-icon"></i>
                     <div class="map-title">خريطة الثانية اهلي</div>
@@ -524,7 +567,7 @@
             </a>
             
             <a href="https://www.google.com/maps/d/edit?mid=1alx0V4cInSmD0VPoD08cGVisLtGwGdo" class="map-item">
-                <div class="map-number">17</div>
+                <div class="map-number">18</div>
                 <div class="map-content">
                     <i class="fas fa-thumbtack map-icon"></i>
                     <div class="map-title">خريطة الشعلة وطني</div>
@@ -533,7 +576,6 @@
         </div>
     </div>
     
-    <!-- زر جانبي -->
     <div class="side-button-container">
         <div class="side-button" id="togglePanel">
             <span class="button-icon"><i class="fas fa-chevron-left"></i></span>
@@ -541,7 +583,6 @@
         </div>
     </div>
     
-    <!-- النافذة الجانبية -->
     <div class="side-panel" id="sidePanel">
         <div class="panel-header">
             <div class="panel-title">الڤيلانات</div>
@@ -561,7 +602,18 @@
     </div>
     
     <script>
-        // تفعيل الزر الجانبي والنافذة
+        // وظيفة البحث في الخرائط
+        document.getElementById('mapSearch').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const maps = document.querySelectorAll('.map-item');
+            
+            maps.forEach(map => {
+                const title = map.querySelector('.map-title').textContent.toLowerCase();
+                map.style.display = title.includes(searchTerm) ? 'flex' : 'none';
+            });
+        });
+
+        // وظائف النافذة الجانبية
         document.addEventListener('DOMContentLoaded', function() {
             const toggleButton = document.getElementById('togglePanel');
             const sidePanel = document.getElementById('sidePanel');
@@ -569,116 +621,105 @@
             const searchButton = document.getElementById('searchButton');
             const searchInput = document.getElementById('searchInput');
             const resultBox = document.getElementById('resultBox');
-            const buttonText = toggleButton.querySelector('.button-text');
             
-            // الفيلاناتٍ
             const conversionMap = {
-           "151": "210 : VLAN",
-            "1310": "114 : VLAN",
-            "1694": "112 : VLAN",
-            "1692": "115 : VLAN",
-            "140": "211 : VLAN",
-            "267": "213 : VLAN",
-            "1721": "315 : VLAN",
-            "1698": "716 : VLAN",
-            "148": "113 : VLAN",
-            "259": "117 : VLAN",
-            "1696": "612 : VLAN",
-            "264": "119 : VLAN",
-            "149": "117 : VLAN",
-            "1720": "310 : VLAN",
-            "265": "114 : VLAN",
-            "1697": "715 : VLAN",
-            "266": "115 : VLAN",
-            "144": "119 : VLAN",
-            "146": "118 : VLAN",
-            "137": "213 : VLAN",
-            "143": "313 : VLAN",
-            "136": "314 : VLAN",
-            "142": "214 : VLAN",
-            "138": "212 : VLAN",
-            "111": "310 : VLAN",
-            "179": "317 : VLAN",
-            "169": "216 : VLAN",
-            "166": "316 : VLAN",
-            "161": "115 : VLAN",
-            "162": "215 : VLAN",
-            "180": "218 : VLAN",
-            "171": "311 : VLAN",
-            "116": "319 : VLAN",
-            "139": "315 : VLAN",
-            "112": "312 : VLAN",
-            "167": "217 : VLAN",
-            "118": "410 : VLAN",
-            "119": "120 : VLAN",
-            "121": "318 : VLAN",
-            "311": "411 : VLAN",
-            "120": "412 : VLAN",
-            "99": "110 : VLAN",
-            "47": "113 : VLAN",
-            "46": "115 : VLAN",
-            "48": "117 : VLAN",
-            "164": "413 : VLAN",
-            "172": "416 : VLAN",
-            "134": "419 : VLAN",
-            "170": "418 : VLAN",
-            "181": "510 : VLAN",
-            "165": "511 : VLAN",
-            "1850": "118 : VLAN",
-            "53": "210 : VLAN",
-            "50": "119 : VLAN",
-            "49": "120 : VLAN",
-            "71": "114 : VLAN",
-            "72": "112 : VLAN",
-            68: 111,
-            69: 116,
-            "113": "411 : VLAN",
-            "1980": "211 : VLAN",
-            73: 212,
-            "182": "512 : VLAN",
-            "147": "417 : VLAN",
-            376: 218,
-            "163": "513 : VLAN",
-            "1747": "213 : VLAN",
-            "55": "215 : VLAN",
-            "51": "216 : VLAN",
-            "52": "214 : VLAN",
-            "152": "514 : VLAN",
-            "54": "217 : VLAN",
-            "173": "515 : VLAN",
-            "174": "516 : VLAN",
-            "175": "517 : VLAN",
-            "106": "611 : VLAN",
-            "183": "519 : VLAN",
-            "60": "219 : VLAN",
-            "61": "220 : VLAN",
-            "108": "616 : VLAN",
-	        "117": "618 : VLAN",     
-            "107": "612 : VLAN",
-            "110": "614 : VLAN",    
-            "109": "617 : VLAN",
-            "122": "615 : VLAN",
-            "178": "518 : VLAN",
-            "176": "610 : VLAN",
+                "151": "210 : VLAN",
+                "1310": "114 : VLAN",
+                "1694": "112 : VLAN",
+                "1692": "115 : VLAN",
+                "140": "211 : VLAN",
+                "267": "213 : VLAN",
+                "1721": "315 : VLAN",
+                "1698": "716 : VLAN",
+                "148": "113 : VLAN",
+                "259": "117 : VLAN",
+                "1696": "612 : VLAN",
+                "264": "119 : VLAN",
+                "149": "117 : VLAN",
+                "1720": "310 : VLAN",
+                "265": "114 : VLAN",
+                "1697": "715 : VLAN",
+                "266": "115 : VLAN",
+                "144": "119 : VLAN",
+                "146": "118 : VLAN",
+                "137": "213 : VLAN",
+                "143": "313 : VLAN",
+                "136": "314 : VLAN",
+                "142": "214 : VLAN",
+                "138": "212 : VLAN",
+                "111": "310 : VLAN",
+                "179": "317 : VLAN",
+                "169": "216 : VLAN",
+                "166": "316 : VLAN",
+                "161": "115 : VLAN",
+                "162": "215 : VLAN",
+                "180": "218 : VLAN",
+                "171": "311 : VLAN",
+                "116": "319 : VLAN",
+                "139": "315 : VLAN",
+                "112": "312 : VLAN",
+                "167": "217 : VLAN",
+                "118": "410 : VLAN",
+                "119": "120 : VLAN",
+                "121": "318 : VLAN",
+                "311": "411 : VLAN",
+                "120": "412 : VLAN",
+                "99": "110 : VLAN",
+                "47": "113 : VLAN",
+                "46": "115 : VLAN",
+                "48": "117 : VLAN",
+                "164": "413 : VLAN",
+                "172": "416 : VLAN",
+                "134": "419 : VLAN",
+                "170": "418 : VLAN",
+                "181": "510 : VLAN",
+                "165": "511 : VLAN",
+                "1850": "118 : VLAN",
+                "53": "210 : VLAN",
+                "50": "119 : VLAN",
+                "49": "120 : VLAN",
+                "71": "114 : VLAN",
+                "72": "112 : VLAN",
+                68: 111,
+                69: 116,
+                "113": "411 : VLAN",
+                "1980": "211 : VLAN",
+                73: 212,
+                "182": "512 : VLAN",
+                "147": "417 : VLAN",
+                376: 218,
+                "163": "513 : VLAN",
+                "1747": "213 : VLAN",
+                "55": "215 : VLAN",
+                "51": "216 : VLAN",
+                "52": "214 : VLAN",
+                "152": "514 : VLAN",
+                "54": "217 : VLAN",
+                "173": "515 : VLAN",
+                "174": "516 : VLAN",
+                "175": "517 : VLAN",
+                "106": "611 : VLAN",
+                "183": "519 : VLAN",
+                "60": "219 : VLAN",
+                "61": "220 : VLAN",
+                "108": "616 : VLAN",
+                "117": "618 : VLAN",     
+                "107": "612 : VLAN",
+                "110": "614 : VLAN",    
+                "109": "617 : VLAN",
+                "122": "615 : VLAN",
+                "178": "518 : VLAN",
+                "176": "610 : VLAN",
             };
             
-            // فتح وإغلاق النافذة الجانبية وتغيير شكل الزر
             toggleButton.addEventListener('click', function() {
                 sidePanel.classList.toggle('active');
                 toggleButton.classList.toggle('collapsed');
-                
-                // تغيير اتجاه السهم
                 const icon = toggleButton.querySelector('.button-icon i');
-                if(sidePanel.classList.contains('active')) {
-                    icon.classList.remove('fa-chevron-left');
-                    icon.classList.add('fa-chevron-right');
-                } else {
-                    icon.classList.remove('fa-chevron-right');
-                    icon.classList.add('fa-chevron-left');
-                }
+                icon.classList.toggle('fa-chevron-right');
+                icon.classList.toggle('fa-chevron-left');
             });
             
-            // إغلاق النافذة بالضغط على زر الإغلاق
             closePanel.addEventListener('click', function() {
                 sidePanel.classList.remove('active');
                 toggleButton.classList.remove('collapsed');
@@ -687,28 +728,19 @@
                 icon.classList.add('fa-chevron-left');
             });
             
-            // وظيفة التحويل
-            searchButton.addEventListener('click', performConversion);
-            searchInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    performConversion();
-                }
-            });
-            
             function performConversion() {
                 const inputValue = searchInput.value.trim();
-                
-                if (inputValue === '') {
+                if (!inputValue) {
                     resultBox.innerHTML = 'الرجاء إدخال رقم الزون';
                     return;
                 }
-                
-                if (conversionMap[inputValue]) {
-                    resultBox.innerHTML = `<div style="font-size: 20px; font-weight: bold; color: var(--primary-color); text-align: center;">${conversionMap[inputValue]}</div>`;
-                } else {
-                    resultBox.innerHTML = 'رقم الزون غير صحيح او غير متوفر';
-                }
+                resultBox.innerHTML = conversionMap[inputValue] 
+                    ? `<div style="font-size: 20px; font-weight: bold; color: var(--primary-color); text-align: center;">${conversionMap[inputValue]}</div>`
+                    : 'رقم الزون غير صحيح او غير متوفر';
             }
+            
+            searchButton.addEventListener('click', performConversion);
+            searchInput.addEventListener('keypress', e => e.key === 'Enter' && performConversion());
         });
     </script>
 </body>
