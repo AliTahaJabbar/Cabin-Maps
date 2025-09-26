@@ -1,758 +1,435 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خرائط العصر الذكي</title>
+    <title>بوابة خدمات Smart Age</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Cairo) for Arabic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
-        
-        :root {
-            --primary-color: #2980b9;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --background-color: #f9f9f9;
-            --text-color: #2c3e50;
-            --card-bg: #ffffff;
-            --hover-bg: #2980b9;
-            --hover-text: #ffffff;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: 'Tajawal', sans-serif;
-            background: var(--background-color);
-            background-image: linear-gradient(135deg, rgba(41, 128, 185, 0.1) 0%, rgba(41, 128, 185, 0.05) 100%);
-            color: var(--text-color);
-            min-height: 100vh;
-            padding: 40px 20px;
+            font-family: 'Cairo', sans-serif;
+            background-color: #f0f2f5;
         }
-        
-        .page-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
+        /* Custom styles for a better look and feel */
+        .sidebar-link {
+            transition: all 0.2s ease-in-out;
         }
-        
-        .page-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 150px;
-            height: 150px;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            border-radius: 0 0 0 100%;
-            opacity: 0.8;
-            z-index: 0;
-        }
-        
-        header {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 30px 0;
-            margin-bottom: 40px;
-            border-bottom: 2px solid rgba(41, 128, 185, 0.2);
-        }
-        
-        h1 {
-            font-size: 46px;
-            margin-bottom: 15px;
-            color: var(--primary-color);
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-            position: relative;
-            display: inline-block;
-        }
-        
-        h1::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            right: 25%;
-            width: 50%;
-            height: 4px;
-            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
-        }
-        
-        .subtitle {
-            font-size: 18px;
-            color: #7f8c8d;
-            margin-bottom: 20px;
-        }
-        
-        .search-container {
-            margin: 20px auto;
-            max-width: 500px;
-            padding: 0 20px;
-        }
-
-        #mapSearch {
-            width: 100%;
-            padding: 12px 20px;
-            border: 2px solid var(--primary-color);
-            border-radius: 30px;
-            font-family: 'Tajawal', sans-serif;
-            margin-bottom: 25px;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-
-        #mapSearch:focus {
-            outline: none;
-            box-shadow: 0 0 10px rgba(41, 128, 185, 0.2);
-        }
-
-        .maps-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            padding: 20px 10px;
-        }
-        
-        .map-item {
-            position: relative;
-            background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            text-decoration: none;
-            color: var(--text-color);
-            height: 120px;
-            padding: 5px;
-        }
-        
-        .map-item:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(41, 128, 185, 0.2);
-        }
-        
-        .map-number {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: var(--primary-color);
+        .sidebar-link:hover, .sidebar-link.active {
+            background-color: #1e40af; /* deeper blue */
             color: white;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: bold;
+            transform: translateX(-5px);
         }
-        
-        .map-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            padding: 15px;
-            z-index: 1;
-            transition: all 0.3s ease;
-        }
-        
-        .map-title {
-            font-size: 18px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        .map-icon {
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: var(--primary-color);
-            transition: all 0.3s ease;
-        }
-        
-        .map-item::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            transition: height 0.3s ease;
-        }
-        
-        .map-item:hover::after {
-            height: 100%;
-            opacity: 0.1;
-        }
-        
-        .map-item:hover .map-title {
-            color: var(--primary-color);
-            transform: translateY(-3px);
-        }
-        
-        .map-item:hover .map-icon {
-            transform: scale(1.2);
-        }
-        
-        .side-button-container {
-            position: fixed;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 1000;
-        }
-        
-        .side-button {
-            background-color: var(--primary-color);
-            color: white;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 8px 15px;
-            cursor: pointer;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            width: auto;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        
-        .side-button.collapsed {
-            padding: 8px;
-            width: 36px;
-            height: 36px;
-            justify-content: center;
-            border-radius: 50%;
-        }
-        
-        .side-button:hover {
-            background-color: var(--accent-color);
-            transform: scale(1.05);
-        }
-        
-        .side-button .button-icon {
-            font-size: 16px;
-            margin-left: 10px;
-        }
-        
-        .side-button.collapsed .button-icon {
-            margin-left: 0;
-        }
-        
-        .side-button .button-text {
-            white-space: nowrap;
-            transition: opacity 0.3s ease, width 0.3s ease;
-        }
-        
-        .side-button.collapsed .button-text {
-            width: 0;
-            opacity: 0;
+        .content-section {
             display: none;
+            animation: fadeIn 0.5s;
         }
-        
-        .side-panel {
-            position: fixed;
-            top: 50%;
-            right: -320px;
-            transform: translateY(-50%);
-            width: 300px;
-            background-color: var(--card-bg);
-            border-radius: 15px 0 0 15px;
-            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            transition: right 0.4s ease;
-            z-index: 999;
+        .content-section.active {
+            display: block;
         }
-        
-        .side-panel.active {
-            right: 0;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(41, 128, 185, 0.2);
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        
-        .panel-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: var(--primary-color);
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
         }
-        
-        .close-panel {
-            cursor: pointer;
-            font-size: 20px;
-            color: var(--text-color);
-            transition: color 0.3s;
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
         }
-        
-        .close-panel:hover {
-            color: var(--accent-color);
-        }
-        
-        .input-group {
-            margin-bottom: 15px;
-        }
-        
-        .input-field {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-family: 'Tajawal', sans-serif;
-            margin-bottom: 10px;
-            transition: border 0.3s;
-        }
-        
-        .input-field:focus {
-            border-color: var(--primary-color);
-            outline: none;
-        }
-        
-        .submit-btn {
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Tajawal', sans-serif;
-            font-weight: bold;
-            width: 100%;
-            transition: all 0.3s;
-        }
-        
-        .submit-btn:hover {
-            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(41, 128, 185, 0.3);
-        }
-        
-        .result-box {
-            margin-top: 15px;
-            background-color: rgba(41, 128, 185, 0.1);
-            border-radius: 8px;
-            padding: 15px;
-            min-height: 100px;
-            border-right: 3px solid var(--primary-color);
-        }
-        
-        @media (max-width: 1024px) {
-            .maps-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .maps-container {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 36px;
-            }
-            
-            .side-panel {
-                width: 260px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .page-container {
-                padding: 15px;
-            }
-            
-            h1 {
-                font-size: 28px;
-            }
-            
-            .side-button {
-                padding: 6px 12px 6px 8px;
-                font-size: 11px;
-                right: 10px;
-            }
-            
-            .side-button.collapsed {
-                padding: 6px;
-                width: 30px;
-                height: 30px;
-            }
-            
-            .side-button .button-icon {
-                font-size: 14px;
-            }
-            
-            .side-panel {
-                width: 230px;
-            }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
-    <div class="page-container">
-        <header>
-            <h1>خرائط العصر الذكي</h1>
-            <p class="subtitle">©SmartNet by Ali Taha - 2025</p>
-        </header>
+<body class="antialiased">
 
-        <div class="search-container">
-            <input type="text" id="mapSearch" placeholder="ابحث عن اسم الخريطة...">
-        </div>
-
-        <div class="maps-container">
-            <a href="https://www.google.com/maps/d/edit?mid=1ZLaIWvkNGXWzXBtS2qn3QnuICsF4MLw" class="map-item">
-                <div class="map-number">1</div>
-                <div class="map-content">
-                    <i class="fas fa-map-marked-alt map-icon"></i>
-                    <div class="map-title">خريطة الدور وطني</div>
-                </div>
-            </a>
-
-            <a href="https://www.google.com/maps/d/edit?mid=1UN4s5AvKMz8ZR3GrcPT0z865V2bUc30" class="map-item">
-                <div class="map-number">2</div>
-                <div class="map-content">
-                    <i class="fas fa-map-marked-alt map-icon"></i>
-                    <div class="map-title">خريطة الدور سوبرسيل</div>
-                </div>
-            </a>
-            
-            <a href="https://www.google.com/maps/d/edit?mid=1cWV-pjm6j9L1MSURZp17WWSW3ExtoPc" class="map-item">
-                <div class="map-number">3</div>
-                <div class="map-content">
-                    <i class="fas fa-globe-asia map-icon"></i>
-                    <div class="map-title">خريطة حي العدل وطني</div>
-                </div>
-            </a>
-            
-            <a href="https://www.google.com/maps/d/edit?mid=12kyZLeaAIV0OkrVTqy99mKI-y-K7uYk" class="map-item">
-                <div class="map-number">4</div>
-                <div class="map-content">
-                    <i class="fas fa-map map-icon"></i>
-                    <div class="map-title">خريطة السلام وطني</div>
-                </div>
-            </a>
-            
-            <a href="https://www.google.com/maps/d/edit?mid=15jUIVVmvhdU_uogd-D8Nr9D5wmMBmFI" class="map-item">
-                <div class="map-number">5</div>
-                <div class="map-content">
-                    <i class="fas fa-street-view map-icon"></i>
-                    <div class="map-title">خريطة الاولى وطني</div>
-                </div>
-            </a>
-            
-            <a href="https://www.google.com/maps/d/edit?mid=1oOLbfyayvFBdWWOGpBK-xT1kXx0iw1g" class="map-item">
-                <div class="map-number">6</div>
-                <div class="map-content">
-                    <i class="fas fa-route map-icon"></i>
-                    <div class="map-title">خريطة الثانية وطني</div>
-                </div>
-            </a>
-
-            <a href="https://www.google.com/maps/d/edit?mid=1uLoAocxwVs-bn78wNgCG1G4CriTO_dI" class="map-item">
-                <div class="map-number">7</div>
-                <div class="map-content">
-                    <i class="fas fa-route map-icon"></i>
-                    <div class="map-title">خريطة الدولعي + الثانية سوبرسيل</div>
-                </div>
-            </a>
-            
-            <a href="https://www.google.com/maps/d/edit?mid=1MEAolkaQxsmBkfsg71jx3XmvVnM-kzU" class="map-item">
-                <div class="map-number">8</div>
-                <div class="map-content">
-                    <i class="fas fa-location-arrow map-icon"></i>
-                    <div class="map-title">خريطة الثالثة وطني</div>
-                </div>
-            </a>
-            
-            <a href="https://www.google.com/maps/d/edit?mid=18WceMP3GnyxvWb3AZM4aMRhe9mXs3pc" class="map-item">
-                <div class="map-number">9</div>
-                <div class="map-content">
-                    <i class="fas fa-globe-americas map-icon"></i>
-                    <div class="map-title">خريطة ربيع ودباش وطني</div>
-                </div>
-            </a>
-            
-            <a href="https://www.google.com/maps/d/edit?mid=1JAbPhFOgkJgDbmUFpdl2kH7CVrihPbI" class="map-item">
-                <div class="map-number">10</div>
-                <div class="map-content">
-                    <i class="fas fa-compass map-icon"></i>
-                    <div class="map-title">خريطة البستان وطني</div>
-                </div>
-            </a>
-            
-            <a href="https://www.google.com/maps/d/edit?mid=1H4WbY05i6KOeHPFYQdlGAH8EsZvo13M" class="map-item">
-                <div class="map-number">11</div>
-                <div class="map-content">
-                    <i class="fas fa-directions map-icon"></i>
-                    <div class="map-title">خريطة الدولعي وطني</div>
-                </div>
-            </a>
-            
-            <a href="https://www.google.com/maps/d/edit?mid=1tAYfNZ-l5-tTSLMDj1qyQxDdxG8BTIY" class="map-item">
-                <div class="map-number">12</div>
-                <div class="map-content">
-                    <i class="fas fa-search-location map-icon"></i>
-                    <div class="map-title">خريطة چكوك وطني</div>
-                </div>
-            </a>
-            
-            <a href="https://www.google.com/maps/d/edit?mid=13NvhiIX_lPuUHMcmvejLPFvJCs9fbM8" class="map-item">
-                <div class="map-number">13</div>
-                <div class="map-content">
-                    <i class="fas fa-map-signs map-icon"></i>
-                    <div class="map-title">خريطة حي العامل وطني</div>
-                </div>
-            </a>
-            
-            <a href="https://www.google.com/maps/d/edit?mid=1eTMFXgQn7QYRw1DzB28ECUB22qHbba0" class="map-item">
-                <div class="map-number">14</div>
-                <div class="map-content">
-                    <i class="fas fa-mountain map-icon"></i>
-                    <div class="map-title">خريطة السيدية وطني</div>
-                </div>
-            </a>
-            
-            <a href="https://www.google.com/maps/d/edit?mid=19AlClkHNP-2VJ3Yu2LPjftkl1Y8TdX8&ll" class="map-item">
-                <div class="map-number">15</div>
-                <div class="map-content">
-                    <i class="fas fa-layer-group map-icon"></i>
-                    <div class="map-title">خريطة الزراعي</div>
-                </div>
-            </a>
-            
-            <a href="https://www.google.com/maps/d/edit?mid=1ixmnNvPz62U1OxsZdHhbfycnmxQwgMs" class="map-item">
-                <div class="map-number">16</div>
-                <div class="map-content">
-                    <i class="fas fa-globe-europe map-icon"></i>
-                    <div class="map-title">خريطة الزراعي 2</div>
-                </div>
-            </a>
-            
-            <a href="https://www.google.com/maps/d/edit?mid=1yQ1_Y8A4WmMJiH6uYzXx_Ttw41gnACg" class="map-item">
-                <div class="map-number">17</div>
-                <div class="map-content">
-                    <i class="fas fa-location-crosshairs map-icon"></i>
-                    <div class="map-title">خريطة المجمع</div>
-                </div>
-            </a>
-            
-            <a href="https://www.google.com/maps/d/edit?mid=15YRfrZL8meLKOYDPb19r-EfYENopqwA" class="map-item">
-                <div class="map-number">18</div>
-                <div class="map-content">
-                    <i class="fas fa-satellite map-icon"></i>
-                    <div class="map-title">خريطة الثانية اهلي</div>
-                </div>
-            </a>
-            
-            <a href="https://www.google.com/maps/d/edit?mid=1alx0V4cInSmD0VPoD08cGVisLtGwGdo" class="map-item">
-                <div class="map-number">19</div>
-                <div class="map-content">
-                    <i class="fas fa-thumbtack map-icon"></i>
-                    <div class="map-title">خريطة الشعلة وطني</div>
-                </div>
-            </a>
-        </div>
-    </div>
-    
-    <div class="side-button-container">
-        <div class="side-button" id="togglePanel">
-            <span class="button-icon"><i class="fas fa-chevron-left"></i></span>
-            <span class="button-text">عرض الڤيلانات</span>
-        </div>
-    </div>
-    
-    <div class="side-panel" id="sidePanel">
-        <div class="panel-header">
-            <div class="panel-title">الڤيلانات</div>
-            <div class="close-panel" id="closePanel">
-                <i class="fas fa-times"></i>
+    <!-- Login Screen -->
+    <div id="login-container" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md transform transition-all duration-300 scale-95 hover:scale-100">
+            <div class="text-center mb-6">
+                <i class="fas fa-network-wired text-blue-600 text-5xl mb-3"></i>
+                <h2 class="text-3xl font-bold text-gray-800">Smart Age Services</h2>
+                <p class="text-gray-500 mt-1">بوابة الإدارة الداخلية</p>
             </div>
+            <form id="login-form">
+                <div class="mb-4">
+                    <label for="username" class="block text-gray-700 font-semibold mb-2">اسم المستخدم</label>
+                    <input type="text" id="username" value="admin" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="block text-gray-700 font-semibold mb-2">كلمة المرور</label>
+                    <input type="password" id="password" value="12345" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div class="mb-6">
+                    <label for="role" class="block text-gray-700 font-semibold mb-2">الدور الوظيفي</label>
+                    <select id="role" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="admin">مسؤول (Admin)</option>
+                        <option value="team_leader">قائد فريق (Team Leader)</option>
+                        <option value="follower">متابع (Follower)</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
+                    تسجيل الدخول
+                </button>
+            </form>
         </div>
-        
-        <div class="input-group">
-            <input type="text" class="input-field" id="searchInput" placeholder="ادخل رقم الزون...">
-            <button class="submit-btn" id="searchButton">عرض الڤيلان</button>
-        </div>
-        
-        <div class="result-box" id="resultBox">
-            الڤيلان سيضهر هنا
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app-container" class="hidden">
+        <div class="flex h-screen bg-gray-100">
+            <!-- Sidebar -->
+            <aside class="w-64 bg-gray-800 text-white flex flex-col">
+                <div class="h-16 flex items-center justify-center text-2xl font-bold border-b border-gray-700">
+                    <i class="fas fa-cogs mr-3"></i>
+                    <span>لوحة التحكم</span>
+                </div>
+                <nav class="flex-1 px-4 py-6 space-y-2">
+                    <a href="#" data-section="dashboard" class="sidebar-link active flex items-center px-4 py-2.5 rounded-md"><i class="fas fa-home w-6 text-center mr-3"></i> الرئيسية</a>
+                    <a href="#" data-section="maps" class="sidebar-link flex items-center px-4 py-2.5 rounded-md"><i class="fas fa-map-marked-alt w-6 text-center mr-3"></i> الخرائط</a>
+                    <a href="#" data-section="offers" class="sidebar-link flex items-center px-4 py-2.5 rounded-md"><i class="fas fa-tags w-6 text-center mr-3"></i> العروض</a>
+                    <a href="#" data-section="materials" class="sidebar-link flex items-center px-4 py-2.5 rounded-md"><i class="fas fa-box-open w-6 text-center mr-3"></i> مخزون المواد</a>
+                    <a href="#" data-section="columns" class="sidebar-link flex items-center px-4 py-2.5 rounded-md"><i class="fas fa-broadcast-tower w-6 text-center mr-3"></i> الأعمدة الفنية</a>
+                    <a href="#" data-section="contact" class="sidebar-link flex items-center px-4 py-2.5 rounded-md"><i class="fas fa-headset w-6 text-center mr-3"></i> تواصل معنا</a>
+                </nav>
+                <div class="p-4 border-t border-gray-700">
+                     <button id="logout-btn" class="w-full flex items-center justify-center bg-red-600 text-white py-2 rounded-md font-semibold hover:bg-red-700 transition">
+                        <i class="fas fa-sign-out-alt mr-2"></i> تسجيل الخروج
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 flex flex-col">
+                <!-- Header -->
+                <header class="h-16 bg-white shadow-md flex items-center justify-between px-6">
+                    <h1 id="header-title" class="text-2xl font-semibold text-gray-800">الرئيسية</h1>
+                    <div class="flex items-center">
+                        <span class="text-gray-600">مرحباً, <span id="user-display" class="font-bold"></span></span>
+                        <i class="fas fa-user-circle text-3xl text-gray-400 mr-3"></i>
+                    </div>
+                </header>
+                <!-- Content Area -->
+                <div class="flex-1 p-6 overflow-y-auto">
+                    <!-- Dashboard Section -->
+                    <div id="dashboard-section" class="content-section active">
+                        <h2 class="text-3xl font-bold mb-6 text-gray-700">نظرة عامة</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div class="bg-white p-6 rounded-xl shadow-lg flex items-center">
+                                <i class="fas fa-map-marked-alt text-4xl text-blue-500"></i>
+                                <div class="mr-4">
+                                    <p class="text-gray-500">إجمالي الخرائط</p>
+                                    <p id="maps-count" class="text-2xl font-bold text-gray-800">0</p>
+                                </div>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-lg flex items-center">
+                                <i class="fas fa-tags text-4xl text-green-500"></i>
+                                <div class="mr-4">
+                                    <p class="text-gray-500">العروض النشطة</p>
+                                    <p id="offers-count" class="text-2xl font-bold text-gray-800">0</p>
+                                </div>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-lg flex items-center">
+                               <i class="fas fa-box-open text-4xl text-yellow-500"></i>
+                                <div class="mr-4">
+                                    <p class="text-gray-500">المواد في المخزون</p>
+                                    <p id="materials-count" class="text-2xl font-bold text-gray-800">0</p>
+                                </div>
+                            </div>
+                             <div class="bg-white p-6 rounded-xl shadow-lg flex items-center">
+                                <i class="fas fa-broadcast-tower text-4xl text-red-500"></i>
+                                <div class="mr-4">
+                                    <p class="text-gray-500">الأعمدة المسجلة</p>
+                                    <p id="columns-count" class="text-2xl font-bold text-gray-800">0</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generic Table Section (will be populated by JS) -->
+                    <div id="maps-section" class="content-section"></div>
+                    <div id="offers-section" class="content-section"></div>
+                    <div id="materials-section" class="content-section"></div>
+                    <div id="columns-section" class="content-section"></div>
+                    
+                    <!-- Contact Section -->
+                    <div id="contact-section" class="content-section text-center">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4">تواصل معنا</h2>
+                        <p class="text-gray-600 mb-8 max-w-2xl mx-auto">نحن هنا لمساعدتك. يمكنك التواصل معنا عبر القنوات التالية أو الاتصال بالدعم الفني مباشرة.</p>
+                        <div class="flex justify-center space-x-6 space-x-reverse text-4xl">
+                            <a href="#" class="text-blue-600 hover:text-blue-800 transition"><i class="fab fa-facebook-square"></i></a>
+                            <a href="#" class="text-blue-400 hover:text-blue-600 transition"><i class="fab fa-twitter-square"></i></a>
+                            <a href="#" class="text-purple-600 hover:text-purple-800 transition"><i class="fab fa-instagram-square"></i></a>
+                        </div>
+                        <div class="mt-10 bg-white p-6 rounded-lg shadow-md max-w-sm mx-auto">
+                            <h3 class="font-bold text-xl mb-2">الدعم الفني</h3>
+                            <p class="text-gray-700"><i class="fas fa-phone-alt mr-2"></i> 0770 123 4567</p>
+                            <p class="text-gray-700"><i class="fas fa-envelope mr-2"></i> support@smartage.com</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
     </div>
     
-    <script>
-        // وظيفة البحث في الخرائط
-        document.getElementById('mapSearch').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const maps = document.querySelectorAll('.map-item');
-            
-            maps.forEach(map => {
-                const title = map.querySelector('.map-title').textContent.toLowerCase();
-                map.style.display = title.includes(searchTerm) ? 'flex' : 'none';
-            });
-        });
+    <!-- Modal for Add/Edit -->
+    <div id="form-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg">
+            <h2 id="modal-title" class="text-2xl font-bold mb-4"></h2>
+            <form id="modal-form">
+                <!-- Form fields will be injected here -->
+                <div id="modal-fields"></div>
+                <div class="flex justify-end mt-6">
+                    <button type="button" id="modal-close" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-md mr-2 hover:bg-gray-400">إلغاء</button>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">حفظ</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-        // وظائف النافذة الجانبية
-        document.addEventListener('DOMContentLoaded', function() {
-            const toggleButton = document.getElementById('togglePanel');
-            const sidePanel = document.getElementById('sidePanel');
-            const closePanel = document.getElementById('closePanel');
-            const searchButton = document.getElementById('searchButton');
-            const searchInput = document.getElementById('searchInput');
-            const resultBox = document.getElementById('resultBox');
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- STATE & MOCK DATA ---
+            let currentUser = { name: null, role: null };
+            let currentSection = 'dashboard';
             
-            const conversionMap = {
-                "151": "210 : VLAN",
-                "235": "317 : VLAN",
-                "مجمع": "2 : VLAN",
-                "المجمع": "2 : VLAN",
-                "اهلي": "2 : VLAN",
-                "الاهلي": "2 : VLAN",
-                "الاهليات": "2 : VLAN",
-                "اهليات": "2 : VLAN",
-                "زراعي": "2 : VLAN",
-                "الزراعي": "2 : VLAN",
-                "1310": "114 : VLAN",
-                "1694": "112 : VLAN",
-                "1692": "115 : VLAN",
-                "140": "211 : VLAN",
-                "267": "213 : VLAN",
-                "1721": "315 : VLAN",
-                "1698": "716 : VLAN",
-                "148": "113 : VLAN",
-                "259": "117 : VLAN",
-                "1696": "612 : VLAN",
-                "264": "119 : VLAN",
-                "149": "117 : VLAN",
-                "1720": "310 : VLAN",
-                "265": "114 : VLAN",
-                "1697": "715 : VLAN",
-                "266": "115 : VLAN",
-                "144": "119 : VLAN",
-                "146": "118 : VLAN",
-                "137": "213 : VLAN",
-                "143": "313 : VLAN",
-                "136": "314 : VLAN",
-                "142": "214 : VLAN",
-                "138": "212 : VLAN",
-                "111": "310 : VLAN",
-                "179": "317 : VLAN",
-                "169": "216 : VLAN",
-                "166": "316 : VLAN",
-                "161": "115 : VLAN",
-                "162": "215 : VLAN",
-                "180": "218 : VLAN",
-                "171": "311 : VLAN",
-                "116": "319 : VLAN",
-                "139": "315 : VLAN",
-                "112": "312 : VLAN",
-                "167": "217 : VLAN",
-                "118": "410 : VLAN",
-                "119": "120 : VLAN",
-                "121": "318 : VLAN",
-                "311": "411 : VLAN",
-                "120": "412 : VLAN",
-                "99": "110 : VLAN",
-                "47": "113 : VLAN",
-                "46": "115 : VLAN",
-                "48": "117 : VLAN",
-                "164": "413 : VLAN",
-                "172": "416 : VLAN",
-                "134": "419 : VLAN",
-                "170": "418 : VLAN",
-                "181": "510 : VLAN",
-                "165": "511 : VLAN",
-                "1850": "118 : VLAN",
-                "53": "210 : VLAN",
-                "50": "119 : VLAN",
-                "49": "120 : VLAN",
-                "71": "114 : VLAN",
-                "72": "112 : VLAN",
-                68: 111,
-                69: 116,
-                "113": "411 : VLAN",
-                "1980": "211 : VLAN",
-                73: 212,
-                "182": "512 : VLAN",
-                "147": "417 : VLAN",
-                376: 218,
-                "163": "513 : VLAN",
-                "1747": "213 : VLAN",
-                "55": "215 : VLAN",
-                "51": "216 : VLAN",
-                "52": "214 : VLAN",
-                "152": "514 : VLAN",
-                "54": "217 : VLAN",
-                "173": "515 : VLAN",
-                "174": "516 : VLAN",
-                "175": "517 : VLAN",
-                "106": "611 : VLAN",
-                "183": "519 : VLAN",
-                "60": "219 : VLAN",
-                "61": "220 : VLAN",
-                "108": "616 : VLAN",
-                "117": "618 : VLAN",     
-                "107": "612 : VLAN",
-                "110": "614 : VLAN",    
-                "109": "617 : VLAN",
-                "122": "615 : VLAN",
-                "178": "518 : VLAN",
-                "176": "610 : VLAN",
-                "45": "312 : VLAN",
-                "44": "313 : VLAN",
-                "43": "311 : VLAN",
+            // This is where we simulate our database
+            const mockDatabase = {
+                maps: [
+                    { id: 1, name: 'خريطة بغداد', area: 'الكرخ', date: '2023-01-15' },
+                    { id: 2, name: 'خريطة البصرة', area: 'المركز', date: '2023-02-20' },
+                ],
+                offers: [
+                    { id: 1, title: 'عرض الصيف', speed: '100 Mbps', price: '25,000 د.ع', active: true },
+                    { id: 2, title: 'عرض الشتاء', speed: '50 Mbps', price: '15,000 د.ع', active: false },
+                ],
+                materials: [
+                    { id: 1, item: 'Router TP-Link', quantity: 150, type: 'راوتر' },
+                    { id: 2, item: 'Cable 100m', quantity: 50, type: 'كابل' },
+                ],
+                columns: [
+                    { id: 1, location: 'شارع فلسطين', subscribers: 32, status: 'نشط' },
+                    { id: 2, location: 'حي الجامعة', subscribers: 25, status: 'صيانة' },
+                ]
             };
             
-            toggleButton.addEventListener('click', function() {
-                sidePanel.classList.toggle('active');
-                toggleButton.classList.toggle('collapsed');
-                const icon = toggleButton.querySelector('.button-icon i');
-                icon.classList.toggle('fa-chevron-right');
-                icon.classList.toggle('fa-chevron-left');
-            });
-            
-            closePanel.addEventListener('click', function() {
-                sidePanel.classList.remove('active');
-                toggleButton.classList.remove('collapsed');
-                const icon = toggleButton.querySelector('.button-icon i');
-                icon.classList.remove('fa-chevron-right');
-                icon.classList.add('fa-chevron-left');
-            });
-            
-            function performConversion() {
-                const inputValue = searchInput.value.trim();
-                if (!inputValue) {
-                    resultBox.innerHTML = 'الرجاء إدخال رقم الزون';
-                    return;
+            const sectionConfig = {
+                maps: { title: 'الخرائط', headers: ['ID', 'الاسم', 'المنطقة', 'التاريخ'], fields: { name: 'الاسم', area: 'المنطقة', date: 'التاريخ' } },
+                offers: { title: 'العروض', headers: ['ID', 'العنوان', 'السرعة', 'السعر', 'الحالة'], fields: { title: 'العنوان', speed: 'السرعة', price: 'السعر', active: 'نشط (true/false)' } },
+                materials: { title: 'مخزون المواد', headers: ['ID', 'المادة', 'الكمية', 'النوع'], fields: { item: 'المادة', quantity: 'الكمية', type: 'النوع' } },
+                columns: { title: 'الأعمدة الفنية', headers: ['ID', 'الموقع', 'المشتركون', 'الحالة'], fields: { location: 'الموقع', subscribers: 'عدد المشتركين', status: 'الحالة' } }
+            };
+
+            // --- DOM ELEMENTS ---
+            const loginContainer = document.getElementById('login-container');
+            const appContainer = document.getElementById('app-container');
+            const loginForm = document.getElementById('login-form');
+            const logoutBtn = document.getElementById('logout-btn');
+            const userDisplay = document.getElementById('user-display');
+            const headerTitle = document.getElementById('header-title');
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const modal = document.getElementById('form-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalForm = document.getElementById('modal-form');
+            const modalFields = document.getElementById('modal-fields');
+            const modalCloseBtn = document.getElementById('modal-close');
+
+            // --- AUTHENTICATION ---
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = document.getElementById('username').value;
+                const role = document.getElementById('role').value;
+                
+                if (username) {
+                    currentUser.name = username;
+                    currentUser.role = role;
+                    loginContainer.classList.add('hidden');
+                    appContainer.classList.remove('hidden');
+                    initApp();
                 }
-                resultBox.innerHTML = conversionMap[inputValue] 
-                    ? `<div style="font-size: 20px; font-weight: bold; color: var(--primary-color); text-align: center;">${conversionMap[inputValue]}</div>`
-                    : 'رقم الزون غير صحيح او غير متوفر';
+            });
+
+            logoutBtn.addEventListener('click', () => {
+                currentUser = { name: null, role: null };
+                appContainer.classList.add('hidden');
+                loginContainer.classList.remove('hidden');
+            });
+            
+            // --- INITIALIZATION ---
+            function initApp() {
+                userDisplay.textContent = `${currentUser.name} (${currentUser.role})`;
+                updateDashboardCounts();
+                navigateTo('dashboard');
+            }
+
+            // --- NAVIGATION ---
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const section = e.currentTarget.dataset.section;
+                    navigateTo(section);
+                });
+            });
+
+            function navigateTo(section) {
+                currentSection = section;
+                sidebarLinks.forEach(l => {
+                    l.classList.toggle('active', l.dataset.section === section);
+                });
+                contentSections.forEach(s => {
+                    s.classList.toggle('active', s.id === `${section}-section`);
+                });
+                
+                const sectionTitles = {
+                    dashboard: 'الرئيسية',
+                    maps: 'إدارة الخرائط',
+                    offers: 'إدارة العروض',
+                    materials: 'إدارة مخزون المواد',
+                    columns: 'إدارة الأعمدة الفنية',
+                    contact: 'تواصل معنا'
+                };
+                headerTitle.textContent = sectionTitles[section] || 'الصفحة الرئيسية';
+
+                if (sectionConfig[section]) {
+                    renderTable(section);
+                }
             }
             
-            searchButton.addEventListener('click', performConversion);
-            searchInput.addEventListener('keypress', e => e.key === 'Enter' && performConversion());
+            function updateDashboardCounts() {
+                document.getElementById('maps-count').textContent = mockDatabase.maps.length;
+                document.getElementById('offers-count').textContent = mockDatabase.offers.filter(o => o.active).length;
+                document.getElementById('materials-count').textContent = mockDatabase.materials.reduce((sum, item) => sum + item.quantity, 0);
+                document.getElementById('columns-count').textContent = mockDatabase.columns.length;
+            }
+
+            // --- DYNAMIC TABLE RENDERING & CRUD ---
+            function renderTable(section) {
+                const config = sectionConfig[section];
+                const data = mockDatabase[section];
+                const container = document.getElementById(`${section}-section`);
+                
+                let tableHTML = `
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-700">${config.title}</h2>
+                        <button class="add-btn bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 ${currentUser.role === 'follower' ? 'hidden' : ''}" data-section="${section}">
+                            <i class="fas fa-plus mr-2"></i> إضافة جديد
+                        </button>
+                    </div>
+                    <div class="bg-white shadow-md rounded-lg overflow-x-auto">
+                        <table class="w-full min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    ${config.headers.map(h => `<th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">${h}</th>`).join('')}
+                                    <th scope="col" class="relative px-6 py-3 ${currentUser.role === 'follower' ? 'hidden' : ''}">
+                                        <span class="sr-only">إجراءات</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                ${data.map(row => `
+                                    <tr>
+                                        ${Object.keys(row).map(key => `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">${row[key]}</td>`).join('')}
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-left ${currentUser.role === 'follower' ? 'hidden' : ''}">
+                                            <button class="edit-btn text-indigo-600 hover:text-indigo-900" data-section="${section}" data-id="${row.id}"><i class="fas fa-edit"></i></button>
+                                            <button class="delete-btn text-red-600 hover:text-red-900 mr-4 ${currentUser.role !== 'admin' ? 'hidden' : ''}" data-section="${section}" data-id="${row.id}"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                 if (data.length === 0) {
+                     tableHTML += `<div class="text-center py-10 text-gray-500">لا توجد بيانات لعرضها.</div>`;
+                 }
+                
+                container.innerHTML = tableHTML;
+            }
+            
+            // --- MODAL HANDLING ---
+            function openModal(section, itemId = null) {
+                const config = sectionConfig[section];
+                const isEditing = itemId !== null;
+                const item = isEditing ? mockDatabase[section].find(i => i.id == itemId) : {};
+
+                modalTitle.textContent = isEditing ? `تعديل ${config.title}` : `إضافة ${config.title}`;
+                modalFields.innerHTML = Object.keys(config.fields).map(key => `
+                    <div class="mb-4">
+                        <label for="field-${key}" class="block text-sm font-medium text-gray-700">${config.fields[key]}</label>
+                        <input type="text" id="field-${key}" name="${key}" value="${item[key] || ''}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                `).join('');
+                
+                modalForm.dataset.section = section;
+                modalForm.dataset.id = isEditing ? itemId : '';
+                modal.classList.remove('hidden');
+            }
+            
+            modalCloseBtn.addEventListener('click', () => modal.classList.add('hidden'));
+
+            modalForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const section = e.currentTarget.dataset.section;
+                const id = e.currentTarget.dataset.id;
+                const formData = new FormData(e.target);
+                const newItem = {};
+                
+                for (let [key, value] of formData.entries()) {
+                     newItem[key] = isNaN(value) || value === '' ? value : Number(value);
+                     if (value === 'true') newItem[key] = true;
+                     if (value === 'false') newItem[key] = false;
+                }
+                
+                if (id) { // Editing
+                    const index = mockDatabase[section].findIndex(i => i.id == id);
+                    mockDatabase[section][index] = { ...mockDatabase[section][index], ...newItem };
+                } else { // Adding
+                    newItem.id = Date.now(); // Simple unique ID
+                    mockDatabase[section].push(newItem);
+                }
+                
+                navigateTo(section);
+                updateDashboardCounts();
+                modal.classList.add('hidden');
+            });
+
+
+            // --- EVENT DELEGATION FOR CRUD BUTTONS ---
+            document.getElementById('app-container').addEventListener('click', e => {
+                const target = e.target.closest('button');
+                if (!target) return;
+                
+                const { section, id } = target.dataset;
+
+                if (target.classList.contains('add-btn')) {
+                    openModal(section);
+                } else if (target.classList.contains('edit-btn')) {
+                    openModal(section, id);
+                } else if (target.classList.contains('delete-btn')) {
+                    if (confirm('هل أنت متأكد من رغبتك في الحذف؟')) {
+                        mockDatabase[section] = mockDatabase[section].filter(item => item.id != id);
+                        navigateTo(section);
+                        updateDashboardCounts();
+                    }
+                }
+            });
+
         });
     </script>
 </body>
