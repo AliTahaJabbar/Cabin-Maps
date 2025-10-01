@@ -1,13 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self' https:;
+      script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com https://apis.google.com https://accounts.google.com;
+      connect-src 'self' https://*.googleapis.com https://accounts.google.com;
+     frame-src 'self' https://accounts.google.com;
+    ">
+
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="https://i.top4top.io/p_3450gatpo0.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>خدمات العصر الذكي</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
       body {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -34,22 +40,23 @@
         border-radius: 6px;
       }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@18.2.0",
-    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
-    "react/": "https://aistudiocdn.com/react@^19.1.1/"
-  }
-}
-</script>
+    
+    <!-- Local Libraries for React -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
 </head>
 <body>
+  <!-- Google APIs (gapi) -->
+  <script src="https://apis.google.com/js/api.js"></script>
+
+  <!-- Google Identity Services (token client) -->
+  <script async defer src="https://accounts.google.com/gsi/client"></script>
+
     <div id="root"></div>
-    <script type="module">
-      import React, { useState, useEffect, createContext, useContext, useCallback, useRef } from 'react';
-      import ReactDOM from 'react-dom/client';
+    <script type="text/babel">
+       const { useState, useEffect, createContext, useContext, useCallback, useRef } = React;
 
       // --- From types.ts ---
       const Section = {
@@ -260,9 +267,17 @@
           return debounced;
       };
 
+      // === إضافة لتصحيح الأخطاء ===
+      console.log('=== Smart Age Debug ===');
+      console.log('Window location:', window.location.href);
+      console.log('Window origin:', window.location.origin);
+      // === نهاية الإضافة ===
+
       // IMPORTANT: Replace these placeholder values with your actual Google Cloud credentials.
-      const GOOGLE_API_KEY = 'YOUR_GOOGLE_API_KEY'; // Replace with your API Key
-      const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com'; // Replace with your Client ID
+      // Note: Storing API keys and client IDs in frontend code is a security risk.
+      // For production applications, these should be handled securely.
+      const GOOGLE_API_KEY = 'AIzaSyB9w43IluUhR1g9wFyGvQ1G4ZHNHVHX6S0';
+      const GOOGLE_CLIENT_ID = '672991789327-avu31r65pavg56s2nt4epk27bi71sg67.apps.googleusercontent.com';
 
       const SCOPES = 'https://www.googleapis.com/auth/drive.file';
       const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
@@ -287,7 +302,7 @@
               setSyncStatus('SYNCING');
               try {
                   await window.gapi.client.request({
-                      path: \`/upload/drive/v3/files/\${fileId}\`,
+                      path: `/upload/drive/v3/files/${fileId}`,
                       method: 'PATCH',
                       params: { uploadType: 'media' },
                       body: JSON.stringify(newData, null, 2)
@@ -327,41 +342,32 @@
           }, [userRole, isSignedInToGoogle, driveFileId, debouncedSave]);
         
           useEffect(() => {
-              const checkGapi = setInterval(() => {
-                  if (window.gapi && window.gapi.client) {
-                      clearInterval(checkGapi);
-                      window.gapi.load('client', async () => {
-                          await window.gapi.client.init({
-                              apiKey: GOOGLE_API_KEY,
-                              discoveryDocs: [DISCOVERY_DOC],
-                          });
-                          setGapiClient(window.gapi.client);
-                      });
-                  }
-              }, 100);
-
-              const checkGis = setInterval(() => {
-                  if (window.google && window.google.accounts) {
-                      clearInterval(checkGis);
-                      const client = window.google.accounts.oauth2.initTokenClient({
-                          client_id: GOOGLE_CLIENT_ID,
-                          scope: SCOPES,
-                          callback: '',
-                      });
-                      setTokenClient(client);
-                  }
-              }, 100);
-
-              return () => {
-                  clearInterval(checkGapi);
-                  clearInterval(checkGis);
+              const gapiScript = document.querySelector('script[src="https://apis.google.com/js/api.js"]');
+              gapiScript.onload = () => {
+                window.gapi.load('client', async () => {
+                    await window.gapi.client.init({
+                        apiKey: GOOGLE_API_KEY,
+                        discoveryDocs: [DISCOVERY_DOC],
+                    });
+                    setGapiClient(window.gapi.client);
+                });
+              };
+              
+              const gisScript = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
+              gisScript.onload = () => {
+                const client = window.google.accounts.oauth2.initTokenClient({
+                    client_id: GOOGLE_CLIENT_ID,
+                    scope: SCOPES,
+                    callback: '',
+                });
+                setTokenClient(client);
               };
           }, []);
 
           const findOrCreateFile = useCallback(async () => {
               try {
                   const response = await gapiClient.drive.files.list({
-                      q: \`name='\${FILE_NAME}' and trashed=false\`,
+                      q: `name='${FILE_NAME}' and trashed=false`,
                       fields: 'files(id, name)',
                       spaces: 'drive'
                   });
@@ -673,7 +679,7 @@
           
           if (!isSignedInToGoogle) {
               return (
-                  <button onClick={handleGoogleSignIn} className={\`flex items-center gap-2 text-sm font-semibold border-2 border-green-500 text-green-500 px-3 py-1.5 rounded-lg hover:bg-green-500 hover:text-white transition-colors \${isMobile ? 'w-full justify-center' : ''}\`}>
+                  <button onClick={handleGoogleSignIn} className={`flex items-center gap-2 text-sm font-semibold border-2 border-green-500 text-green-500 px-3 py-1.5 rounded-lg hover:bg-green-500 hover:text-white transition-colors ${isMobile ? 'w-full justify-center' : ''}`}>
                       <i className="fab fa-google-drive"></i>
                       <span>مزامنة مع Drive</span>
                   </button>
@@ -689,7 +695,7 @@
                   break;
               case 'SYNCED':
                   statusIcon = 'fas fa-check-circle';
-                  statusText = \`تمت المزامنة: \${lastSyncTime?.toLocaleTimeString()}\`;
+                  statusText = `تمت المزامنة: ${lastSyncTime?.toLocaleTimeString()}`;
                   statusColor = 'text-green-400';
                   break;
               case 'ERROR':
@@ -704,8 +710,8 @@
           }
 
           return (
-              <div className={\`flex items-center gap-3 \${isMobile ? 'w-full' : ''}\`}>
-                  <div className={\`flex items-center gap-2 \${statusColor} text-sm font-semibold\`}>
+              <div className={`flex items-center gap-3 ${isMobile ? 'w-full' : ''}`}>
+                  <div className={`flex items-center gap-2 ${statusColor} text-sm font-semibold`}>
                       <i className={statusIcon}></i>
                       <span>{statusText}</span>
                   </div>
@@ -734,11 +740,11 @@
             <a
               href="#"
               onClick={handleClick}
-              className={\`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-300 whitespace-nowrap \${
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-300 whitespace-nowrap ${
                 isActive ? 'bg-white/10' : 'hover:bg-white/10'
-              }\`}
+              }`}
             >
-              <i className={\`fas \${icon}\`}></i>
+              <i className={`fas ${icon}`}></i>
               <span>{label}</span>
             </a>
           </li>
@@ -806,7 +812,7 @@
             </header>
 
             {/* Mobile Nav */}
-            <div className={\`fixed top-0 right-0 h-full w-72 bg-slate-800 z-50 transform transition-transform duration-300 ease-in-out \${isMobileNavOpen ? 'translate-x-0' : 'translate-x-full'}\`}>
+            <div className={`fixed top-0 right-0 h-full w-72 bg-slate-800 z-50 transform transition-transform duration-300 ease-in-out ${isMobileNavOpen ? 'translate-x-0' : 'translate-x-full'}`}>
               <div className="p-4 flex justify-between items-center border-b border-white/10">
                 <span className="text-lg font-bold text-white">القائمة</span>
                 <button onClick={() => setMobileNavOpen(false)} className="text-2xl text-white">
@@ -853,9 +859,9 @@
                           <h3 className="text-xl font-bold mb-4 border-b-2 border-blue-500 pb-2 inline-block">روابط سريعة</h3>
                           <ul className="text-slate-300 space-y-2 text-sm">
                              {navLinks.map(link => (
-                                <li key={\`footer-\${link.section}\`} className={(link.hiddenFor && userRole && link.hiddenFor.includes(userRole)) ? 'hidden' : ''}>
+                                <li key={`footer-${link.section}`} className={(link.hiddenFor && userRole && link.hiddenFor.includes(userRole)) ? 'hidden' : ''}>
                                    <a href="#" onClick={(e) => { e.preventDefault(); setActiveSection(link.section); window.scrollTo(0,0); }} className="hover:text-blue-400 transition-colors">
-                                      <i className={\`fas \${link.icon} ml-2\`}></i>{link.label}
+                                      <i className={`fas ${link.icon} ml-2`}></i>{link.label}
                                    </a>
                                 </li>
                              ))}
@@ -976,7 +982,7 @@
           };
 
           const handleDeleteMap = (index) => {
-              if (window.confirm(\`هل أنت متأكد من حذف خريطة "\${data.maps[index].name}"؟\`)) {
+              if (window.confirm(`هل أنت متأكد من حذف خريطة "${data.maps[index].name}"؟`)) {
                   const newMaps = [...data.maps];
                   newMaps.splice(index, 1);
                   updateData({ ...data, maps: newMaps });
@@ -1001,7 +1007,7 @@
                   {userRole === 'admin' && (
                       <div className="max-w-xl mx-auto my-6 p-4 bg-slate-50 border rounded-lg">
                           <button onClick={showForm ? () => setShowForm(false) : handleAddNewClick} className="text-blue-600 font-semibold flex items-center gap-2">
-                              <i className={\`fas \${showForm ? 'fa-times' : 'fa-plus'}\`}></i>
+                              <i className={`fas ${showForm ? 'fa-times' : 'fa-plus'}`}></i>
                               {showForm ? 'إلغاء' : 'إضافة خريطة جديدة'}
                           </button>
                           {showForm && (
@@ -1091,7 +1097,7 @@
                   setSelectedArea(searchTerm);
               } else {
                   setSelectedArea(null);
-                  if(searchTerm) alert(\`لا توجد عروض للمنطقة: \${searchTerm}\`);
+                  if(searchTerm) alert(`لا توجد عروض للمنطقة: ${searchTerm}`);
               }
           };
           
@@ -1136,7 +1142,7 @@
               if (newArea && !data.offers[newArea]) {
                   const newData = JSON.parse(JSON.stringify(data));
                   newData.offers[newArea] = [{
-                      title: \`عرض جديد للمنطقة \${newArea}\`,
+                      title: `عرض جديد للمنطقة ${newArea}`,
                       table: [["شهر", "15000", "20000", "30000", "75000"]],
                       note: "ملاحظات العرض الجديد."
                   }];
@@ -1269,18 +1275,18 @@
                   setSearchResult({ area: term, vlan });
               } else {
                   setSearchResult(null);
-                  alert(\`لا يوجد فيلان للمنطقة: \${term}\`);
+                  alert(`لا يوجد فيلان للمنطقة: ${term}`);
               }
           };
 
           const handleAddVlan = () => {
               const area = prompt("أدخل اسم المنطقة الجديدة:");
               if (area && !data.vlans[area]) {
-                  const number = prompt(\`أدخل رقم الفيلان للمنطقة \${area}:\`);
+                  const number = prompt(`أدخل رقم الفيلان للمنطقة ${area}:`);
                   if (number) {
                       const newVlans = { ...data.vlans, [area]: number };
                       updateData({ ...data, vlans: newVlans });
-                      alert(\`تمت إضافة فيلان منطقة "\${area}" بنجاح.\`);
+                      alert(`تمت إضافة فيلان منطقة "${area}" بنجاح.`);
                   }
               } else if (area) {
                   alert("هذه المنطقة موجودة بالفعل.");
@@ -1288,14 +1294,14 @@
           };
           
           const handleEditVlan = (area) => {
-              const newNumber = prompt(\`أدخل رقم الفيلان الجديد للمنطقة \${area}:\`, data.vlans[area]);
+              const newNumber = prompt(`أدخل رقم الفيلان الجديد للمنطقة ${area}:`, data.vlans[area]);
               if (newNumber) {
                   const newVlans = { ...data.vlans, [area]: newNumber };
                   updateData({ ...data, vlans: newVlans });
                   if(searchResult && searchResult.area === area) {
                       setSearchResult({ area, vlan: newNumber });
                   }
-                  alert(\`تم تعديل فيلان منطقة "\${area}" بنجاح.\`);
+                  alert(`تم تعديل فيلان منطقة "${area}" بنجاح.`);
               }
           };
 
@@ -1362,7 +1368,7 @@
 
           const handleChange = (field, value) => {
               if (field === 'specs') {
-                  setMaterial({ ...material, specs: value.split('\\n') });
+                  setMaterial({ ...material, specs: value.split('\n') });
               } else {
                   setMaterial({ ...material, [field]: value });
               }
@@ -1390,7 +1396,7 @@
                       </div>
                       <div>
                           <label className="block text-sm font-medium text-slate-700">المواصفات (كل مواصفة في سطر)</label>
-                          <textarea value={material.specs.join('\\n')} onChange={(e) => handleChange('specs', e.target.value)} className="mt-1 w-full p-2 border rounded-md" rows={4}></textarea>
+                          <textarea value={material.specs.join('\n')} onChange={(e) => handleChange('specs', e.target.value)} className="mt-1 w-full p-2 border rounded-md" rows={4}></textarea>
                       </div>
                   </div>
                    <div className="mt-6 flex justify-end gap-3">
@@ -1444,11 +1450,11 @@
                           <button
                               key={cat.id}
                               onClick={() => setActiveCategory(cat.id)}
-                              className={\`px-6 py-2 rounded-lg font-semibold transition-colors \${
+                              className={`px-6 py-2 rounded-lg font-semibold transition-colors ${
                                   activeCategory === cat.id
                                       ? 'bg-blue-500 text-white'
                                       : 'bg-white text-blue-500 border-2 border-blue-500 hover:bg-blue-50'
-                              }\`}
+                              }`}
                           >
                               {cat.name}
                           </button>
@@ -1503,7 +1509,7 @@
           const handleAddNumber = () => {
               const area = prompt("أدخل اسم المنطقة:");
               if (area) {
-                  const number = prompt(\`أدخل الرقم للمنطقة \${area}:\`);
+                  const number = prompt(`أدخل الرقم للمنطقة ${area}:`);
                   if (number) {
                       const newNumbers = [...data.maintenanceNumbers, { area, number }];
                       updateData({ ...data, maintenanceNumbers: newNumbers });
@@ -1515,7 +1521,7 @@
               const item = data.maintenanceNumbers[index];
               const newArea = prompt("تعديل اسم المنطقة:", item.area);
               if (newArea) {
-                  const newNumber = prompt(\`تعديل الرقم للمنطقة \${newArea}:\`, item.number);
+                  const newNumber = prompt(`تعديل الرقم للمنطقة ${newArea}:`, item.number);
                   if (newNumber) {
                       const newNumbers = [...data.maintenanceNumbers];
                       newNumbers[index] = { area: newArea, number: newNumber };
@@ -1535,7 +1541,7 @@
           const handleAddSticker = () => {
               const name = prompt("أدخل اسم الستيكر:");
               if (name) {
-                  const thumb = prompt(\`أدخل رابط الصورة المصغرة للستيكر \${name}:\`);
+                  const thumb = prompt(`أدخل رابط الصورة المصغرة للستيكر ${name}:`);
                   if (thumb) {
                       const newStickers = [...data.stickers, { name, thumb }];
                       updateData({ ...data, stickers: newStickers });
@@ -1547,7 +1553,7 @@
               const item = data.stickers[index];
               const newName = prompt("تعديل اسم الستيكر:", item.name);
               if (newName) {
-                  const newThumb = prompt(\`تعديل رابط الصورة للستيكر \${newName}:\`, item.thumb);
+                  const newThumb = prompt(`تعديل رابط الصورة للستيكر ${newName}:`, item.thumb);
                   if (newThumb) {
                       const newStickers = [...data.stickers];
                       newStickers[index] = { name: newName, thumb: newThumb };
@@ -1620,17 +1626,17 @@
           const areaIndex = data.columns.areas.findIndex(a => a.name === areaName);
           const zoneIndex = data.columns.areas[areaIndex]?.zones.findIndex(z => z.number === zoneNumber);
           const poleIndex = data.columns.areas[areaIndex]?.zones[zoneIndex]?.poles.findIndex(p => p.number === pole.number);
-          const basePath = \`columns.areas.\${areaIndex}.zones.\${zoneIndex}.poles.\${poleIndex}\`;
+          const basePath = `columns.areas.${areaIndex}.zones.${zoneIndex}.poles.${poleIndex}`;
 
           const handleCountChange = (type, amount) => {
               const currentValue = pole[type];
               if (currentValue + amount >= 0) {
-                  updateField(\`\${basePath}.\${type}\`, currentValue + amount);
+                  updateField(`${basePath}.${type}`, currentValue + amount);
               }
           };
           
           const handleNotesChange = (e) => {
-              updateField(\`\${basePath}.notes\`, e.target.value);
+              updateField(`${basePath}.notes`, e.target.value);
           };
 
           return (
@@ -1694,7 +1700,7 @@
           };
 
           const handleDeleteArea = (areaName) => {
-              if (window.confirm(\`هل أنت متأكد من حذف منطقة "\${areaName}" وكل ما تحتويه؟\`)) {
+              if (window.confirm(`هل أنت متأكد من حذف منطقة "${areaName}" وكل ما تحتويه؟`)) {
                   const newAreas = data.columns.areas.filter(a => a.name !== areaName);
                   updateData({ ...data, columns: { ...data.columns, areas: newAreas } });
                   if (selectedArea?.name === areaName) {
@@ -1706,7 +1712,7 @@
 
           const handleAddZone = () => {
               if (!selectedArea) return;
-              const number = prompt(\`أدخل رقم الزون الجديد لمنطقة "\${selectedArea.name}":\`);
+              const number = prompt(`أدخل رقم الزون الجديد لمنطقة "${selectedArea.name}":`);
               if (number && !selectedArea.zones.some(z => z.number === number)) {
                   const newZone = { number, poles: [] };
                   const newAreas = data.columns.areas.map(a => a.name === selectedArea.name ? { ...a, zones: [...a.zones, newZone] } : a);
@@ -1718,7 +1724,7 @@
           
           const handleDeleteZone = (zoneNumber) => {
               if (!selectedArea) return;
-              if (window.confirm(\`هل أنت متأكد من حذف الزون "\${zoneNumber}" وكل أعمدته؟\`)) {
+              if (window.confirm(`هل أنت متأكد من حذف الزون "${zoneNumber}" وكل أعمدته؟`)) {
                   const newZones = selectedArea.zones.filter(z => z.number !== zoneNumber);
                   const newAreas = data.columns.areas.map(a => a.name === selectedArea.name ? { ...a, zones: newZones } : a);
                   updateData({ ...data, columns: { ...data.columns, areas: newAreas } });
@@ -1730,7 +1736,7 @@
 
           const handleAddPole = () => {
               if (!selectedArea || !selectedZone) return;
-              const poleNumStr = prompt(\`أدخل رقم العمود الجديد في زون "\${selectedZone.number}":\`);
+              const poleNumStr = prompt(`أدخل رقم العمود الجديد في زون "${selectedZone.number}":`);
               if (poleNumStr) {
                   const number = parseInt(poleNumStr);
                   if (!isNaN(number) && !selectedZone.poles.some(p => p.number === number)) {
@@ -1747,9 +1753,9 @@
 
           const handleDeletePole = (poleNumber) => {
                if (!selectedArea || !selectedZone) return;
-               if (window.confirm(\`هل أنت متأكد من حذف العمود "\${poleNumber}"؟\`)) {
+               if (window.confirm(`هل أنت متأكد من حذف العمود "${poleNumber}"؟`)) {
                   const newPoles = selectedZone.poles.filter(p => p.number !== poleNumber);
-                  const newZones = selectedArea.zones.map(z => z.number === selectedZone.number ? { ...z, poles: newPoles } : z);
+                  const newZones = selectedZone.poles.map(z => z.number === selectedZone.number ? { ...z, poles: newPoles } : z);
                   const newAreas = data.columns.areas.map(a => a.name === selectedArea.name ? { ...a, zones: newZones } : a);
                   updateData({ ...data, columns: { ...data.columns, areas: newAreas } });
                }
@@ -1825,7 +1831,7 @@
                           <ul className="space-y-1">
                               {data.columns.areas.map(area => (
                                   <li key={area.name} className="flex items-center group">
-                                      <button onClick={() => {setSelectedArea(area); setSelectedZone(area.zones[0] || null);}} className={\`w-full text-right px-4 py-2 rounded-md transition-colors \${selectedArea?.name === area.name ? 'bg-blue-500 text-white' : 'hover:bg-slate-100'}\`}>
+                                      <button onClick={() => {setSelectedArea(area); setSelectedZone(area.zones[0] || null);}} className={`w-full text-right px-4 py-2 rounded-md transition-colors ${selectedArea?.name === area.name ? 'bg-blue-500 text-white' : 'hover:bg-slate-100'}`}>
                                           {area.name}
                                       </button>
                                       {isAdmin && <button onClick={() => handleDeleteArea(area.name)} className="mr-2 text-red-500 opacity-0 group-hover:opacity-100"><i className="fas fa-trash-alt"></i></button>}
@@ -1845,7 +1851,7 @@
                                   <div className="flex flex-wrap gap-2 mb-6 border-b pb-6">
                                       {selectedArea.zones.map(zone => (
                                           <div key={zone.number} className="relative group">
-                                              <button onClick={() => setSelectedZone(zone)} className={\`px-4 py-2 rounded-md font-semibold transition-colors \${selectedZone?.number === zone.number ? 'bg-slate-800 text-white' : 'bg-slate-200 hover:bg-slate-300'}\`}>
+                                              <button onClick={() => setSelectedZone(zone)} className={`px-4 py-2 rounded-md font-semibold transition-colors ${selectedZone?.number === zone.number ? 'bg-slate-800 text-white' : 'bg-slate-200 hover:bg-slate-300'}`}>
                                                   {zone.number}
                                               </button>
                                                {isAdmin && <button onClick={() => handleDeleteZone(zone.number)} className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><i className="fas fa-times"></i></button>}
@@ -1975,7 +1981,5 @@
         </React.StrictMode>
       );
     </script>
-    <script async defer src="https://apis.google.com/js/api.js"></script>
-    <script async defer src="https://accounts.google.com/gsi/client"></script>
 </body>
 </html>
